@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelChef", "ExcelChef\ExcelChef.csproj", "{EF67AF14-D1D8-457F-8292-D0FEAA22D974}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5BF89D93-9F54-458C-976A-C57266A6CB22}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelChef.Tests", "ExcelChef.Tests\ExcelChef.Tests.csproj", "{63F6C4ED-FE75-46DB-B92F-18208724B625}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF67AF14-D1D8-457F-8292-D0FEAA22D974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF67AF14-D1D8-457F-8292-D0FEAA22D974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF67AF14-D1D8-457F-8292-D0FEAA22D974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF67AF14-D1D8-457F-8292-D0FEAA22D974}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63F6C4ED-FE75-46DB-B92F-18208724B625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63F6C4ED-FE75-46DB-B92F-18208724B625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63F6C4ED-FE75-46DB-B92F-18208724B625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63F6C4ED-FE75-46DB-B92F-18208724B625}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal

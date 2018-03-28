@@ -125,6 +125,42 @@ namespace ExcelChef.IntegrationTests
             _workbook.GetSheetAt(0).GetRow(41).GetCell(5).StringCellValue.Should().Be("value");
         }
 
+        [Test]
+        public void CanWriteNumbers()
+        {
+            // act
+            RunProgram(@"
+                [
+                    {
+                        ""kind"": ""write"",
+                        ""cell"": ""A1"",
+                        ""value"": 1337
+                    }
+                ]
+            ");
+
+            // assert
+            _workbook.GetSheetAt(0).GetRow(0).GetCell(0).NumericCellValue.Should().Be(1337);
+        }
+
+        [Test]
+        public void LeavesNumberFormatsIntact()
+        {
+            // act
+            RunProgram(@"
+                [
+                    {
+                        ""kind"": ""write"",
+                        ""cell"": ""A3"",
+                        ""value"": 43173
+                    }
+                ]
+            ");
+
+            // assert
+            _workbook.GetSheetAt(0).GetRow(2).GetCell(0).CellStyle.GetDataFormatString().Should().Be("d-mmm-yy");
+        }
+
         private void RunProgram(string instructions, bool xls = false)
         {
             // prepare input

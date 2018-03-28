@@ -22,7 +22,7 @@ namespace ExcelChef.Instructions
         /// <summary>
         /// The value to be written.
         /// </summary>
-        public string Value { get; set; }
+        public object Value { get; set; }
 
         void IInstruction.Execute(IWorkbook workbook)
         {
@@ -32,7 +32,9 @@ namespace ExcelChef.Instructions
             CellReference cellRef = new CellReference(Cell);
             IRow row = worksheet.GetRow(cellRef.Row) ?? worksheet.CreateRow(cellRef.Row);
             ICell cell = row.GetCell(cellRef.Col) ?? row.CreateCell(cellRef.Col);
-            cell.SetCellValue(Value);
+            ICellStyle style = cell.CellStyle;
+            WriteValue(cell);
+            cell.CellStyle = style;
             worksheet.ForceFormulaRecalculation = true;
         }
 
@@ -44,6 +46,18 @@ namespace ExcelChef.Instructions
                 case int position: return workbook.GetSheetAt(position - 1);
                 case string name: return workbook.GetSheet(name);
                 default: throw new Exception($"{nameof(Worksheet)} must be a name or a position");
+            }
+        }
+
+        private void WriteValue(ICell cell)
+        {
+            switch (Value)
+            {
+                case string text: cell.SetCellValue(text); break;
+                case long number: cell.SetCellValue(number); break;
+                case double number: cell.SetCellValue(number); break;
+                case bool boolean: cell.SetCellValue(boolean); break;
+                default: throw new Exception($"{nameof(Value)} must be a string, number or boolean");
             }
         }
     }

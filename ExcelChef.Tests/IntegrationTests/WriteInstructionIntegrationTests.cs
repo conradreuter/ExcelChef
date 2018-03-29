@@ -1,43 +1,16 @@
 ﻿using FluentAssertions;
-using NPOI.SS.UserModel;
 using NUnit.Framework;
-using System.IO;
 
 namespace ExcelChef.IntegrationTests
 {
     [TestFixture]
-    public class IntegrationTests
+    public class WriteInstructionIntegrationTests : IntegrationTestsBase
     {
-        private static readonly string TemplateFile = Path.Combine(TestContext.CurrentContext.TestDirectory, @"IntegrationTests\template.xlsx");
-        private static readonly string TemplateFileXls = Path.Combine(TestContext.CurrentContext.TestDirectory, @"IntegrationTests\template.xls");
-        
-        private IWorkbook _workbook;
-
-        [TearDown]
-        public void TearDown()
-        {
-            _workbook.Close();
-        }
-
-        [Test]
-        public void CanHandleXlsx()
-        {
-            // act + assert
-            RunProgram("[]");
-        }
-
-        [Test]
-        public void CanHandleXls()
-        {
-            // act
-            RunProgram("[]", xls: true);
-        }
-
         [Test]
         public void DefaultsToUsingTheFirstWorksheet()
         {
             // act
-            RunProgram(@"
+            Run(@"
                 [
                     {
                         ""kind"": ""write"",
@@ -55,7 +28,7 @@ namespace ExcelChef.IntegrationTests
         public void CanReferenceWorksheetsByPosition()
         {
             // act
-            RunProgram(@"
+            Run(@"
                 [
                     {
                         ""kind"": ""write"",
@@ -74,7 +47,7 @@ namespace ExcelChef.IntegrationTests
         public void CanReferenceWorksheetsByName()
         {
             // act
-            RunProgram(@"
+            Run(@"
                 [
                     {
                         ""kind"": ""write"",
@@ -93,7 +66,7 @@ namespace ExcelChef.IntegrationTests
         public void LeavesStylingIntact()
         {
             // act
-            RunProgram(@"
+            Run(@"
                 [
                     {
                         ""kind"": ""write"",
@@ -111,7 +84,7 @@ namespace ExcelChef.IntegrationTests
         public void CanWriteAnywhere()
         {
             // act
-            RunProgram(@"
+            Run(@"
                 [
                     {
                         ""kind"": ""write"",
@@ -129,7 +102,7 @@ namespace ExcelChef.IntegrationTests
         public void CanWriteNumbers()
         {
             // act
-            RunProgram(@"
+            Run(@"
                 [
                     {
                         ""kind"": ""write"",
@@ -147,11 +120,11 @@ namespace ExcelChef.IntegrationTests
         public void LeavesNumberFormatsIntact()
         {
             // act
-            RunProgram(@"
+            Run(@"
                 [
                     {
                         ""kind"": ""write"",
-                        ""cell"": ""A3"",
+                        ""cell"": ""A4"",
                         ""value"": 43173
                     }
                 ]
@@ -159,29 +132,6 @@ namespace ExcelChef.IntegrationTests
 
             // assert
             _workbook.GetSheetAt(0).GetRow(2).GetCell(0).CellStyle.GetDataFormatString().Should().Be("d-mmm-yy");
-        }
-
-        private void RunProgram(string instructions, bool xls = false)
-        {
-            // prepare input
-            Stream input = new MemoryStream();
-            TextWriter writer = new StreamWriter(input);
-            writer.Write(instructions);
-            writer.Flush();
-            input.Seek(0, SeekOrigin.Begin);
-
-            // run program
-            Stream output = new MemoryStream();
-            new Program
-            {
-                Input = input,
-                Output = output,
-                Template = new FileStream(xls ? TemplateFileXls : TemplateFile, FileMode.Open, FileAccess.Read),
-            }.Run();
-
-            // prepare output for assertions
-            output.Seek(0, SeekOrigin.Begin);
-            _workbook = WorkbookFactory.Create(output);
         }
     }
 }

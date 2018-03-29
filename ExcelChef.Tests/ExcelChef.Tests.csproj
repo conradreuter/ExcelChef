@@ -87,7 +87,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntegrationTests\IntegrationTests.cs" />
+    <Compile Include="IntegrationTests\FileFormatIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\IntegrationTestsBase.cs" />
+    <Compile Include="IntegrationTests\WriteInstructionIntegrationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

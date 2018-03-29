@@ -20,6 +20,7 @@ namespace ExcelChef
         public void Run()
         {
             IWorkbook template = WorkbookFactory.Create(Template);
+            template.MissingCellPolicy = MissingCellPolicy.CREATE_NULL_AS_BLANK;
             IEnumerable<IInstruction> instructions = _parser.Parse(new StreamReader(Input));
             foreach (IInstruction instruction in instructions)
             {

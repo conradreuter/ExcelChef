@@ -29,11 +29,8 @@ namespace ExcelChef.Parsers
         private IInstruction Parse(JObject jsonObject)
         {
             string kind = jsonObject.Property("kind").Value.ToObject<string>();
-            switch (kind)
-            {
-                case "write": return jsonObject.ToObject<WriteInstruction>();
-                default: throw new Exception($@"Unknown instruction kind ""{kind}""");
-            }
+            Type type = InstructionUtils.GetType(kind);
+            return (IInstruction)jsonObject.ToObject(type);
         }
     }
 }

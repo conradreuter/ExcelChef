@@ -7,7 +7,7 @@ namespace ExcelChef.IntegrationTests
     public class WriteInstructionIntegrationTests : IntegrationTestsBase
     {
         [Test]
-        public void DefaultsToUsingTheFirstWorksheet()
+        public void DefaultsToUsingTheFirstSheet()
         {
             // act
             Run(@"
@@ -25,14 +25,14 @@ namespace ExcelChef.IntegrationTests
         }
 
         [Test]
-        public void CanReferenceWorksheetsByPosition()
+        public void CanReferenceTheSheetByPosition()
         {
             // act
             Run(@"
                 [
                     {
                         ""kind"": ""write"",
-                        ""worksheet"": 1,
+                        ""sheet"": 1,
                         ""cell"": ""A1"",
                         ""value"": ""value""
                     }
@@ -44,14 +44,14 @@ namespace ExcelChef.IntegrationTests
         }
 
         [Test]
-        public void CanReferenceWorksheetsByName()
+        public void CanReferenceTheSheetByName()
         {
             // act
             Run(@"
                 [
                     {
                         ""kind"": ""write"",
-                        ""worksheet"": ""TEST"",
+                        ""sheet"": ""TEST"",
                         ""cell"": ""A1"",
                         ""value"": ""value""
                     }
@@ -60,24 +60,6 @@ namespace ExcelChef.IntegrationTests
 
             // assert
             _workbook.GetSheetAt(0).GetRow(0).GetCell(0).StringCellValue.Should().Be("value");
-        }
-
-        [Test]
-        public void LeavesStylingIntact()
-        {
-            // act
-            Run(@"
-                [
-                    {
-                        ""kind"": ""write"",
-                        ""cell"": ""A2"",
-                        ""value"": ""value""
-                    }
-                ]
-            ");
-
-            // assert
-            _workbook.GetSheetAt(0).GetRow(1).GetCell(0).CellStyle.GetFont(_workbook).IsBold.Should().BeTrue();
         }
 
         [Test]
@@ -117,20 +99,26 @@ namespace ExcelChef.IntegrationTests
         }
 
         [Test]
-        public void LeavesNumberFormatsIntact()
+        public void LeavesStylesIntact()
         {
             // act
             Run(@"
                 [
                     {
                         ""kind"": ""write"",
-                        ""cell"": ""A4"",
+                        ""cell"": ""A2"",
+                        ""value"": ""value""
+                    },
+                    {
+                        ""kind"": ""write"",
+                        ""cell"": ""A3"",
                         ""value"": 43173
                     }
                 ]
             ");
 
             // assert
+            _workbook.GetSheetAt(0).GetRow(1).GetCell(0).CellStyle.GetFont(_workbook).IsBold.Should().BeTrue();
             _workbook.GetSheetAt(0).GetRow(2).GetCell(0).CellStyle.GetDataFormatString().Should().Be("d-mmm-yy");
         }
     }

@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="IntegrationTests\FileFormatIntegrationTests.cs" />
     <Compile Include="IntegrationTests\IntegrationTestsBase.cs" />
+    <Compile Include="IntegrationTests\CopyInstructionIntegrationTests.cs" />
     <Compile Include="IntegrationTests\WriteInstructionIntegrationTests.cs" />
   </ItemGroup>
   <ItemGroup>

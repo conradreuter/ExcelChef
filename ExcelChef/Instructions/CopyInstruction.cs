@@ -48,11 +48,11 @@ namespace ExcelChef.Instructions
             IReadOnlyCollection<ICell> dstRange = InstructionUtils.GetRange(dstSheet, Dst).ToList();
             if (srcRange.Count == 1) srcRange = Enumerable.Repeat(srcRange.First(), dstRange.Count).ToList();
             if (srcRange.Count != dstRange.Count) throw new Exception($"Source and destination range must have the same dimensions");
-            foreach (var cellPair in srcRange.Zip(dstRange, (Src, Dst) => new { Src, Dst }))
+            foreach (var pair in srcRange.Zip(dstRange, (Src, Dst) => new { Src, Dst }))
             {
                 foreach (WhatToCopy whatToCopy in What)
                 {
-                    whatToCopy.Execute(cellPair.Src, cellPair.Dst);
+                    whatToCopy.Execute(pair.Src, pair.Dst);
                 }
             }
         }

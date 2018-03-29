@@ -94,6 +94,7 @@ namespace ExcelChef.Instructions
         {
             switch (value)
             {
+                case null: cell.SetCellType(CellType.Blank); break;
                 case string text: cell.SetCellValue(text); break;
                 case long number: cell.SetCellValue(number); break;
                 case double number: cell.SetCellValue(number); break;

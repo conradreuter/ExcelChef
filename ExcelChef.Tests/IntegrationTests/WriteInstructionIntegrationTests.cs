@@ -14,8 +14,8 @@ namespace ExcelChef.IntegrationTests
                 [
                     {
                         ""kind"": ""write"",
-                        ""cell"": ""A1"",
-                        ""value"": ""value""
+                        ""dst"": ""A1"",
+                        ""values"": [""value""]
                     }
                 ]
             ");
@@ -32,9 +32,9 @@ namespace ExcelChef.IntegrationTests
                 [
                     {
                         ""kind"": ""write"",
-                        ""sheet"": 1,
-                        ""cell"": ""A1"",
-                        ""value"": ""value""
+                        ""dstSheet"": 1,
+                        ""dst"": ""A1"",
+                        ""values"": [""value""]
                     }
                 ]
             ");
@@ -51,9 +51,9 @@ namespace ExcelChef.IntegrationTests
                 [
                     {
                         ""kind"": ""write"",
-                        ""sheet"": ""TEST"",
-                        ""cell"": ""A1"",
-                        ""value"": ""value""
+                        ""dstSheet"": ""TEST"",
+                        ""dst"": ""A1"",
+                        ""values"": [""value""]
                     }
                 ]
             ");
@@ -70,8 +70,8 @@ namespace ExcelChef.IntegrationTests
                 [
                     {
                         ""kind"": ""write"",
-                        ""cell"": ""F42"",
-                        ""value"": ""value""
+                        ""dst"": ""F42"",
+                        ""values"": [""value""]
                     }
                 ]
             ");
@@ -88,14 +88,35 @@ namespace ExcelChef.IntegrationTests
                 [
                     {
                         ""kind"": ""write"",
-                        ""cell"": ""A1"",
-                        ""value"": 1337
+                        ""dst"": ""A1"",
+                        ""values"": [1337]
                     }
                 ]
             ");
 
             // assert
             _workbook.GetSheetAt(0).GetRow(0).GetCell(0).NumericCellValue.Should().Be(1337);
+        }
+
+        [Test]
+        public void CanWriteMultipleValuesAtOnce()
+        {
+            // act
+            Run(@"
+                [
+                    {
+                        ""kind"": ""write"",
+                        ""dst"": ""A1:B2"",
+                        ""values"": [""value00"", ""value01"", ""value10"", ""value11""]
+                    }
+                ]
+            ");
+
+            // assert
+            _workbook.GetSheetAt(0).GetRow(0).GetCell(0).StringCellValue.Should().Be("value00");
+            _workbook.GetSheetAt(0).GetRow(0).GetCell(1).StringCellValue.Should().Be("value01");
+            _workbook.GetSheetAt(0).GetRow(1).GetCell(0).StringCellValue.Should().Be("value10");
+            _workbook.GetSheetAt(0).GetRow(1).GetCell(1).StringCellValue.Should().Be("value11");
         }
 
         [Test]
@@ -106,13 +127,8 @@ namespace ExcelChef.IntegrationTests
                 [
                     {
                         ""kind"": ""write"",
-                        ""cell"": ""A2"",
-                        ""value"": ""value""
-                    },
-                    {
-                        ""kind"": ""write"",
-                        ""cell"": ""A3"",
-                        ""value"": 43173
+                        ""dst"": ""A2:A3"",
+                        ""values"": [""value"", 43173]
                     }
                 ]
             ");

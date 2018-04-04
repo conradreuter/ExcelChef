@@ -167,6 +167,25 @@ namespace ExcelChef.IntegrationTests
         }
 
         [Test]
+        public void ShiftsFormulas()
+        {
+            // act
+            Run(@"
+                [
+                    {
+                        ""kind"": ""copy"",
+                        ""src"": ""A5"",
+                        ""dst"": ""B42"",
+                        ""what"": [""formulas""]
+                    }
+                ]
+            ");
+
+            // assert
+            _workbook.GetSheetAt(0).GetRow(41).GetCell(1).CellFormula.Should().Be("B38");
+        }
+
+        [Test]
         public void CanCopyValues()
         {
             // act

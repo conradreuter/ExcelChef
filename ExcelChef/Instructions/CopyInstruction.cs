@@ -1,4 +1,6 @@
-﻿using NPOI.SS.UserModel;
+﻿using ExcelChef.Utility;
+using NPOI.SS.Formula;
+using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +64,8 @@ namespace ExcelChef.Instructions
         /// </summary>
         public class WhatToCopy
         {
+            public delegate void ExecuteCallback(ICell srcCell, ICell dstCell);
+
             private static readonly IReadOnlyDictionary<string, WhatToCopy> _instancesByName;
 
             static WhatToCopy()
@@ -79,10 +83,16 @@ namespace ExcelChef.Instructions
 
             private static void CopyFormula(ICell srcCell, ICell dstCell)
             {
-                CopyValue(srcCell, dstCell);
-                if (srcCell.CellType == CellType.Formula)
+                if (srcCell.CellType != CellType.Formula)
                 {
-                    dstCell.SetCellFormula(srcCell.CellFormula);
+                    CopyValue(srcCell, dstCell);
+                }
+                else
+                {
+                    int rowOffset = dstCell.RowIndex - srcCell.RowIndex;
+                    int colOffset = dstCell.ColumnIndex - srcCell.ColumnIndex;
+                    string formula = FormulaRefShifter.ShiftFormulaRefs(srcCell.CellFormula, rowOffset, colOffset);
+                    dstCell.SetCellFormula(formula);
                 }
             }
 
@@ -120,7 +130,7 @@ namespace ExcelChef.Instructions
                 return instance;
             }
 
-            private WhatToCopy(Action<ICell, ICell> execute)
+            private WhatToCopy(ExecuteCallback execute)
             {
                 Execute = execute;
             }
@@ -128,7 +138,7 @@ namespace ExcelChef.Instructions
             /// <summary>
             /// Execute the copy operation.
             /// </summary>
-            public Action<ICell, ICell> Execute { get; }
+            public ExecuteCallback Execute { get; }
         }
     }
 }

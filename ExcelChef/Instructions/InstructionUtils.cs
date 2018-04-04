@@ -101,7 +101,6 @@ namespace ExcelChef.Instructions
                 case bool boolean: cell.SetCellValue(boolean); break;
                 default: throw new Exception($@"Value must be a string, number or boolean, got ""{value}""");
             }
-            cell.Sheet.ForceFormulaRecalculation = true;
         }
 
         /// <summary>

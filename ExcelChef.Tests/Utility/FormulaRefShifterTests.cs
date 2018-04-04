@@ -55,5 +55,12 @@ namespace ExcelChef.Utility
             // assert
             ShiftFormulaRefs("ABS(X42)", 1, 1).Should().Be("ABS(Y43)");
         }
+
+        [Test]
+        public void ShiftFormulaRefs_UnderstandsExcel2013Functions()
+        {
+            // assert
+            ShiftFormulaRefs("WEEKNUM(X42)", 1, 1).Should().Be("WEEKNUM(Y43)");
+        }
     }
 }

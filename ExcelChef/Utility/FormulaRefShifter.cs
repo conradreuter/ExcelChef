@@ -1,5 +1,7 @@
 ﻿using NPOI.SS.Formula;
 using NPOI.SS.Formula.PTG;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace ExcelChef.Utility
 {
@@ -8,6 +10,8 @@ namespace ExcelChef.Utility
     /// </summary>
     public class FormulaRefShifter
     {
+        private static readonly XSSFEvaluationWorkbook _evaluationWorkbook = XSSFEvaluationWorkbook.Create(new XSSFWorkbook());
+
         private readonly int _colOffset;
         private readonly int _rowOffset;
 
@@ -27,9 +31,9 @@ namespace ExcelChef.Utility
 
         private string ShiftFormulaRefs(string formula)
         {
-            Ptg[] tokens = FormulaParser.Parse(formula, null);
+            Ptg[] tokens = FormulaParser.Parse(formula, _evaluationWorkbook);
             foreach (Ptg token in tokens) ShiftTokenRefs(token);
-            return FormulaRenderer.ToFormulaString(null, tokens);
+            return FormulaRenderer.ToFormulaString(_evaluationWorkbook, tokens);
         }
 
         private void ShiftTokenRefs(Ptg token)

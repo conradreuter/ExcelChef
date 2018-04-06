@@ -92,6 +92,7 @@ namespace ExcelChef.Instructions
                     int rowOffset = dstCell.RowIndex - srcCell.RowIndex;
                     int colOffset = dstCell.ColumnIndex - srcCell.ColumnIndex;
                     string formula = FormulaRefShifter.ShiftFormulaRefs(srcCell.CellFormula, rowOffset, colOffset);
+                    dstCell.SetCellType(CellType.Blank); // erase the cached value
                     dstCell.SetCellFormula(formula);
                 }
             }

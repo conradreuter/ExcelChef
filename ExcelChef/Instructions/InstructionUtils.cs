@@ -62,27 +62,28 @@ namespace ExcelChef.Instructions
         }
 
         /// <summary>
-        /// Get a cell from a sheet.
-        /// </summary>
-        public static ICell GetCell(ISheet sheet, string cell)
-        {
-            CellReference address = new CellReference(cell);
-            IRow row = sheet.GetRow(address.Row) ?? sheet.CreateRow(address.Row);
-            return row.GetCell(address.Col) ?? row.CreateCell(address.Col);
-        }
-
-        /// <summary>
         /// Get a range from a sheet.
         /// </summary>
-        public static IEnumerable<ICell> GetRange(ISheet sheet, string range)
+        public static IEnumerable<ICell> GetRange(ISheet sheet, string range, bool excludeEmpty = false)
         {
             CellRangeAddress address = CellRangeAddress.ValueOf(range);
             for (int rowIdx = address.FirstRow; rowIdx <= address.LastRow; ++rowIdx)
             {
-                IRow row = sheet.GetRow(rowIdx) ?? sheet.CreateRow(rowIdx);
+                IRow row = sheet.GetRow(rowIdx);
+                if (row == null)
+                {
+                    if (excludeEmpty) continue;
+                    row = sheet.CreateRow(rowIdx);
+                }
                 for (int colIdx = address.FirstColumn; colIdx <= address.LastColumn; ++colIdx)
                 {
-                    yield return row.GetCell(colIdx) ?? row.CreateCell(colIdx);
+                    ICell cell = row.GetCell(colIdx);
+                    if (cell == null)
+                    {
+                        if (excludeEmpty) continue;
+                        cell = row.CreateCell(colIdx);
+                    }
+                    yield return cell;
                 }
             }
         }

@@ -21,7 +21,6 @@ namespace ExcelChef
         public void Run()
         {
             IWorkbook template = WorkbookFactory.Create(Template);
-            template.MissingCellPolicy = MissingCellPolicy.CREATE_NULL_AS_BLANK;
             IEnumerable<IInstruction> instructions = _parser.Parse(new StreamReader(Input));
             foreach (IInstruction instruction in instructions)
             {
@@ -38,8 +37,8 @@ namespace ExcelChef
                 new Program
                 {
                     Input = Console.OpenStandardInput(),
-                    Output = new FileStream(args[1], FileMode.Create, FileAccess.ReadWrite),
-                    Template = new FileStream(args[0], FileMode.Open, FileAccess.Read),
+                    Output = new FileStream(args[1], FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite),
+                    Template = new FileStream(args[0], FileMode.Open, FileAccess.Read, FileShare.ReadWrite),
                 }.Run();
                 /* PROFILER
                 new Program

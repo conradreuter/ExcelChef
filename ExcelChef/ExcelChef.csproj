@@ -43,6 +43,7 @@
     <Compile Include="Instructions\CopyInstruction.cs" />
     <Compile Include="Instructions\IInstruction.cs" />
     <Compile Include="Instructions\InstructionUtils.cs" />
+    <Compile Include="Instructions\InvalidateInstruction.cs" />
     <Compile Include="Instructions\WriteInstruction.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\Json\InstructionJsonConverter.cs" />
